@@ -1,3 +1,4 @@
+/* Employee */
 import mysql from 'mysql';
 
 export default async function handler(req, res) {
@@ -11,9 +12,10 @@ export default async function handler(req, res) {
   });
 
   try {
+    const employeeId = req.query.employeeId; // Retrieve the entered employee ID from the query parameters
     client.connect();
     const result = await new Promise((resolve, reject) => {
-      client.query(`SELECT Name, City, State FROM Hotel WHERE City = '${City}' OR State = '${State}'`, (error, results) => {
+      client.query(`SELECT COUNT(*) AS count FROM Employee WHERE Employee_ID = ${employeeId}`, (error, results) => {
         if (error) {
           reject(error);
         } else {
@@ -21,7 +23,14 @@ export default async function handler(req, res) {
         }
       });
     });
-    res.status(200).json(result);
+    const count = result[0].count;
+    if (count > 0) {
+      // The entered employee ID is valid
+      res.status(200).json({ message: 'Access granted' });
+    } else {
+      // The entered employee ID is invalid
+      res.status(401).json({ error: 'Access denied' });
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });

@@ -13,7 +13,8 @@ export default async function handler(req, res) {
   try {
     client.connect();
     const result = await new Promise((resolve, reject) => {
-      client.query('SELECT Capacity FROM Room', (error, results) => {
+      
+      client.query(`SELECT DISTINCT r.Capacity, h.Name AS Hotel_Name, h.Address AS Hotel_Address FROM Room r JOIN Hotel h ON r.Hotel_ID = h.Hotel_ID WHERE r.Capacity = '${room_capacity}'`, (error, results) => {
         if (error) {
           reject(error);
         } else {

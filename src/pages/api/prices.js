@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   try {
     client.connect();
     const result = await new Promise((resolve, reject) => {
-      client.query(`SELECT Name, City, State FROM Hotel WHERE City = '${City}' OR State = '${State}'`, (error, results) => {
+      client.query(`SELECT Price FROM Room WHERE HOTEL_ID = (SELECT Hotel_ID FROM Hotel WHERE Name = '${hotelName})`, (error, results) => {
         if (error) {
           reject(error);
         } else {
