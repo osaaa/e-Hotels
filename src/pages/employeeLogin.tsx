@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { useState } from "react";
+import {  useState, ChangeEvent, FormEvent  } from "react";
 import Link from "next/link";
 import router, { useRouter } from "next/router";
 
@@ -9,12 +9,13 @@ const inter = Inter({ subsets: ["latin"] });
 export default function EmployeeLoginPage() {
 	const [employeeID, setEmployeeID] = useState("");
 	const [validationResult, setValidationResult] = useState("");
+	const router = useRouter();
 
-	const handleEmployeeID = (e) => {
+	const handleEmployeeID = (e: ChangeEvent<HTMLInputElement>) => {
 		setEmployeeID(e.target.value);
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		// handle form submission here
 
@@ -23,7 +24,7 @@ export default function EmployeeLoginPage() {
 			const response = await fetch("/api/validate-employee", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ employeeID }),
+				body: JSON.stringify({ employeeId: employeeID }),
 			});
 
 			const data = await response.json();
@@ -44,7 +45,7 @@ export default function EmployeeLoginPage() {
 	};
 	return (
 		<>
-			<form>
+			<form onSubmit={handleSubmit}>
 				<div>
 					Employee ID:
 					<input
@@ -53,7 +54,7 @@ export default function EmployeeLoginPage() {
 						name="employeeID"
 						required
 						value={employeeID}
-						onChange={(e) => setEmployeeID(e.target.value)}
+						onChange={handleEmployeeID}
 					/>
 				</div>
 
