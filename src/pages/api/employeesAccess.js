@@ -17,10 +17,10 @@ export default async function handler(req, res) {
   });
 
   try {
-    const { employeeId } = req.body; // Retrieve the entered employee ID from the request body
+    const { employeeID } = req.body; // Retrieve the entered employee ID from the request body
     client.connect();
     const result = await new Promise((resolve, reject) => {
-      client.query(`SELECT COUNT(*) AS count FROM Employee WHERE Employee_ID = ${employeeId}`, (error, results) => {
+      client.query(`SELECT COUNT(*) AS count FROM Employee WHERE Employee_ID = ${employeeID}`, (error, results) => {
         if (error) {
           reject(error);
         } else {
@@ -43,3 +43,4 @@ export default async function handler(req, res) {
     client.end();
   }
 }
+

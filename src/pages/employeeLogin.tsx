@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import router, { useRouter } from "next/router";
 
