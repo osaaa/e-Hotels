@@ -1,25 +1,27 @@
 use hotels;
-INSERT INTO Hotel_chain (Chain_ID, Name, Address, Email, Phone)
+INSERT INTO Hotel_chain (Chain_ID, Name, Street, City, State_or_province, Country, Postal_code, Email, Phone)
 VALUES
-(1, 'Marriott International', '10400 Fernwood Road Bethesda, MD 20817 USA', 'marriott@marriott.com', '301-380-3000'),
-(2, 'Hilton Worldwide', '7930 Jones Branch Drive McLean, VA 22102 USA', 'hiltonworldwide@hilton.com', '703-883-1000'),
-(3, 'InterContinental Hotels Group', '3 Ravinia Drive Suite 100 Atlanta, GA 30346 USA', 'ihg@ihg.com', '800-621-0555'),
-(4, 'Wyndham Hotels and Resorts', '22 Sylvan Way Parsippany, NJ 07054 USA', 'wyndham@wyndham.com', '973-753-6000'),
-(5, 'Choice Hotels International', '1 Choice Hotels Circle Suite 400 Rockville, MD 20850 USA', 'choicehotels@choicehotels.com', '301-592-5000');
+(1, 'Marriott International', '10400 Fernwood Road', 'Bethesda', 'MD', 'USA', '20817', 'marriott@marriott.com', '301-380-3000'),
+(2, 'Hilton Worldwide', '7930 Jones Branch Drive', 'McLean', 'VA', 'USA', '22102', 'hiltonworldwide@hilton.com', '703-883-1000'),
+(3, 'InterContinental Hotels Group', '3 Ravinia Drive Suite 100', 'Atlanta', 'GA', 'USA', '30346', 'ihg@ihg.com', '800-621-0555'),
+(4, 'Wyndham Hotels and Resorts', '22 Sylvan Way', 'Parsippany', 'NJ', 'USA', '07054', 'wyndham@wyndham.com', '973-753-6000'),
+(5, 'Choice Hotels International', '1 Choice Hotels Circle Suite 400', 'Rockville', 'MD', 'USA', '20850', 'choicehotels@choicehotels.com', '301-592-5000');
+
 
 -- Marriott hotels.
-INSERT INTO Hotel (Hotel_ID, Chain_ID, Name, Address, Email, Phone, Star_rating, Number_of_rooms)
+INSERT INTO Hotel (Hotel_ID, Chain_ID, Name, Street, City, State_or_province, Country, Postal_code, Email, Phone, Star_rating, Number_of_rooms)
 VALUES
-(1, 1, 'Bethesda Marriott', '5151 Pooks Hill Road Bethesda, MD 20814 USA', 'marriott@marriott.com', '301-897-9400', 3, 407),
-(2, 1, 'Bethesda North Marriott Hotel & Conference Center', '5701 Marinelli Rd, North Bethesda, MD 20852 USA', 'marriott@marriott.com', '301-822-9200', 4, 447),
-(3, 1, 'Marriott Marquis New York', '1535 Broadway , New York, NY 10036 USA', 'marriott@marriott.com', '212-398-1900', 4, 1966),
-(4, 1, 'JW Marriott Essex House New York', '160 Central Park S, New York, NY 10019 USA', 'marriott@marriott.com', '212-247-0300', 4, 511),
-(5, 1, 'JW Marriott Los Angeles L.A. LIVE', '900 W Olympic Blvd, Los Angeles, CA 90015 USA', 'marriott@marriott.com', '213-765-8600', 4, 878),
-(6, 1, 'The Westin Bonaventure Hotel & Suites, Los Angeles', '404 S Figueroa St, Los Angeles, CA 90071 USA', 'marriott@marriott.com', '213-624-1000', 4, 1358),
-(7, 1, 'Fairfield Inn & Suites by Marriott', '7035 Arundel Mills Cir, Hanover, MD 21076 USA', 'marriott@marriott.com', '410-694-9494', 3, 119),
-(8, 1, 'Courtyard by Marriott Chevy Chase', '5520 Wisconsin Ave, Chevy Chase, MD 20815 USA', 'marriott@marriott.com', '301-656-1500', 2, 226),
-(9, 1, 'SpringHill Suites by Marriott Annapolis', '189 Admiral Cochrane Dr, Annapolis, MD 21401 USA', 'marriott@marriott.com', '410-571-9980', 1, 120),
-(10, 1, 'TownePlace Suites by Marriott Frederick', '5050 Westview Dr, Frederick, MD 21703 USA', 'marriott@marriott.com', '301-624-0050', 1, 120);
+(1, 1, 'Bethesda Marriott', '5151 Pooks Hill Road', 'Bethesda', 'MD', 'USA', '20814', 'marriott@marriott.com', '301-897-9400', 3, 407),
+(2, 1, 'Bethesda North Marriott Hotel & Conference Center', '5701 Marinelli Rd', 'North Bethesda', 'MD', 'USA', '20852', 'marriott@marriott.com', '301-822-9200', 4, 447),
+(3, 1, 'Marriott Marquis New York', '1535 Broadway', 'New York', 'NY', 'USA', '10036', 'marriott@marriott.com', '212-398-1900', 4, 1966),
+(4, 1, 'JW Marriott Essex House New York', '160 Central Park S', 'New York', 'NY', 'USA', '10019', 'marriott@marriott.com', '212-247-0300', 4, 511),
+(5, 1, 'JW Marriott Los Angeles L.A. LIVE', '900 W Olympic Blvd', 'Los Angeles', 'CA', 'USA', '90015', 'marriott@marriott.com', '213-765-8600', 4, 878),
+(6, 1, 'The Westin Bonaventure Hotel & Suites, Los Angeles', '404 S Figueroa St', 'Los Angeles', 'CA', 'USA', '90071', 'marriott@marriott.com', '213-624-1000', 4, 1358),
+(7, 1, 'Fairfield Inn & Suites by Marriott', '7035 Arundel Mills Cir', 'Hanover', 'MD', 'USA', '21076', 'marriott@marriott.com', '410-694-9494', 3, 119),
+(8, 1, 'Courtyard by Marriott Chevy Chase', '5520 Wisconsin Ave', 'Chevy Chase', 'MD', 'USA', '20815', 'marriott@marriott.com', '301-656-1500', 2, 226),
+(9, 1, 'SpringHill Suites by Marriott Annapolis', '189 Admiral Cochrane Dr', 'Annapolis', 'MD', 'USA', '21401', 'marriott@marriott.com', '410-571-9980', 1, 120),
+(10, 1, 'TownePlace Suites by Marriott Frederick', '5050 Westview Dr', 'Frederick', 'MD', 'USA', '21703', 'marriott@marriott.com', '301-624-0050', 1, 120);
+
 
 -- Marriott hotels room insertion
 -- Bethesda Marriott
