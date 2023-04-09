@@ -4,7 +4,11 @@ USE Hotels;
 CREATE TABLE IF NOT EXISTS Hotel_chain (
   Chain_ID INT NOT NULL PRIMARY KEY,
   Name VARCHAR(50) NOT NULL,
-  Address VARCHAR(100) NOT NULL,
+  Street VARCHAR(50) NOT NULL,
+  City VARCHAR(50) NOT NULL,
+  State_or_province VARCHAR(50) NOT NULL,
+  Country VARCHAR(50) NOT NULL,
+  Postal_code VARCHAR(20) NOT NULL,
   Email VARCHAR(50) NOT NULL,
   Phone VARCHAR(20) NOT NULL
 );
@@ -13,13 +17,18 @@ CREATE TABLE IF NOT EXISTS Hotel (
   Hotel_ID INT NOT NULL PRIMARY KEY,
   Chain_ID INT NOT NULL,
   Name VARCHAR(50) NOT NULL,
-  Address VARCHAR(100) NOT NULL,
+  Street VARCHAR(50) NOT NULL,
+  City VARCHAR(50) NOT NULL,
+  State_or_province VARCHAR(50) NOT NULL,
+  Country VARCHAR(50) NOT NULL,
+  Postal_code VARCHAR(20) NOT NULL,
   Email VARCHAR(50) NOT NULL,
   Phone VARCHAR(20) NOT NULL,
   Star_rating INT CHECK (Star_rating >= 1 AND Star_rating <= 5),
   Number_of_rooms INT CHECK (Number_of_rooms > 0),
   FOREIGN KEY (Chain_ID) REFERENCES Hotel_chain(Chain_ID)
 );
+
 
 CREATE TABLE IF NOT EXISTS Room (
   Room_ID INT NOT NULL PRIMARY KEY,
