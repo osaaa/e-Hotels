@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
 import router, { useRouter } from "next/router";
 
@@ -24,7 +24,7 @@ export default function EmployeeLoginPage() {
 			const response = await fetch("/api/employeesAccess", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ employeeId: employeeID }),
+				body: JSON.stringify({ employeeID: employeeID }),
 			});
 
 			const data = await response.json();

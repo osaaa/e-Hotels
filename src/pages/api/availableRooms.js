@@ -13,13 +13,13 @@ export default async function handler(req, res) {
     database: "Hotels",
   });
 
-  const { price_range, capacity, availability, area, hotel_chain, category } = req.body;
+  const { price_range, capacity, availability, area, hotel_chain, star_rating } = req.body;
 
   try {
     client.connect();
 
     let query = `
-      SELECT h.Name, r.Price, h.Area, hc.Name AS Hotel_Chain, h.Category, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms
+      SELECT h.Name, r.Price, h.City, h.State_or_province, hc.Name AS Hotel_Chain, h.Star_rating, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms
       FROM Room r
       JOIN Hotel h ON r.Hotel_ID = h.Hotel_ID
       JOIN Hotel_chain hc ON h.Chain_ID = hc.Chain_ID
@@ -32,18 +32,19 @@ export default async function handler(req, res) {
             AND Check_out_date >= '${availability.check_out}')`;
 
     if (area) {
-      query += ` AND h.Area = '${area}'`;
+      query += ` AND CONCAT(h.City, ', ', h.State_or_province) = '${area}'`;
     }
 
     if (hotel_chain) {
       query += ` AND hc.Name = '${hotel_chain}'`;
     }
 
-    if (category) {
-      query += ` AND h.Category = '${category}'`;
+    if (star_rating) {
+      query += ` AND h.Star_rating = '${star_rating}'`;
     }
 
-    query += ` GROUP BY h.Name, r.Price, h.Area, hc.Name, h.Category, h.Number_of_rooms`;
+    query += ` GROUP BY h.Name, r.Price, h.City, h.State_or_province, hc.Name, h.Star_rating, h.Number_of_rooms`;
+
 
     const result = await new Promise((resolve, reject) => {
       client.query(query, (error, results) => {
