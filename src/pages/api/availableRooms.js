@@ -13,45 +13,51 @@ export default async function handler(req, res) {
     database: "Hotels",
   });
 
-  const { price_range, capacity, availability, area, hotel_chain, star_rating } = req.body;
+  const { priceRangeMin, priceRangeMax, roomCapacity, startDate = '2000-01-01', endDate = '2100-01-01', area, hotelChain, star_rating } = req.query;
   console.log("Request body: ", req.body);
-
 
   try {
     client.connect();
 
     let query = `
     SELECT h.Hotel_ID as id, h.Name, r.Price, h.City, h.State_or_province, hc.Name AS Hotel_Chain, h.Star_rating, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms
-      FROM Room r
-      JOIN Hotel h ON r.Hotel_ID = h.Hotel_ID
-      JOIN Hotel_chain hc ON h.Chain_ID = hc.Chain_ID
-      WHERE r.Capacity = '${capacity}'
-        AND r.Price >= '${price_range[0]}' AND r.Price <= '${price_range[1]}'
-        AND r.Room_ID NOT IN (
-          SELECT Room_ID
-          FROM Booking
-          WHERE Check_in_date <= '${availability.check_in}'
-            AND Check_out_date >= '${availability.check_out}')`;
+    FROM Room r
+    JOIN Hotel h ON r.Hotel_ID = h.Hotel_ID
+    JOIN Hotel_chain hc ON h.Chain_ID = hc.Chain_ID
+    WHERE r.Capacity = 'Single'
+      AND r.Price >= '100 ' AND r.Price <= '610'
+      AND r.Room_ID NOT IN (
+        SELECT Room_ID
+        FROM Booking
+        WHERE Check_in_date <= '2023-04-10' 
+          AND Check_out_date >= '2023-04-24')
+    AND CONCAT_WS(', ', h.City, h.State_or_province) = 'MA' AND hc.Name = 'Hilton Worldwide' 
+    GROUP BY h.Hotel_ID, h.Name, r.Price, h.City, h.State_or_province, hc.Name, h.Star_rating, h.Number_of_rooms
+    
+    `;
+
+    let queryParams = [roomCapacity, priceRangeMin, priceRangeMax, endDate, startDate];
 
     if (area) {
-      query += ` AND CONCAT_WS(', ', h.City, h.State_or_province) = '${area}'`;
+      query += " AND CONCAT_WS(', ', h.City, h.State_or_province) = 'MA'";
+      queryParams.push(area);
     }
 
-
-    if (hotel_chain) {
-      query += ` AND hc.Name = '${hotel_chain}'`;
+    if (hotelChain) {
+      query += " AND hc.Name = 'Hilton Worldwide'";
+      queryParams.push(hotelChain);
     }
 
     if (star_rating) {
-      query += ` AND h.Star_rating = '${star_rating}'`;
+      query += " AND h.Star_rating = '4'";
+      queryParams.push(star_rating);
     }
 
-    query += ` GROUP BY h.Name, r.Price, h.City, h.State_or_province, hc.Name, h.Star_rating, h.Number_of_rooms`;
+    query += " GROUP BY h.Name, r.Price, h.City, h.State_or_province, hc.Name, h.Star_rating, h.Number_of_rooms";
     console.log("Query: ", query);
 
-
     const result = await new Promise((resolve, reject) => {
-      client.query(query, (error, results) => {
+      client.query(query, queryParams, (error, results) => {
         if (error) {
           reject(error);
         } else {
@@ -70,6 +76,3 @@ export default async function handler(req, res) {
     client.end();
   }
 }
-
-
-
