@@ -22,18 +22,19 @@ export default function HomePage() {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const query = new URLSearchParams({
-			startDate,
-			endDate,
-			roomCapacity,
-			hotelCategory,
-			priceRangeMin: "${priceRange[0]}",
-			priceRangeMax: "${priceRange[1]}",
-			area,
-			hotelChain,
+		  startDate,
+		  endDate,
+		  roomCapacity,
+		  hotelCategory,
+		  priceRangeMin: priceRange[0].toString(),
+		  priceRangeMax: priceRange[1].toString(),
+		  area,
+		  hotelChain,
 		}).toString();
-		router.push("/availableRooms?${query}");
-	};
+		router.push(`/availableRooms?${query}`);
+	  };
 
+	  
 	const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setStartDate(e.target.value);
 	};
