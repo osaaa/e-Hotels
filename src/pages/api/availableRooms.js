@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     let queryParams = [roomCapacity, priceRangeMin, priceRangeMax, endDate, startDate];
 
     if (area) {
-      query += " AND CONCAT_WS(', ', h.City, h.State_or_province) = 'MA'";
+      query += " AND CONCAT_WS(', ', h.City, h.State_or_province) = 'MD'";
       queryParams.push(area);
     }
 
