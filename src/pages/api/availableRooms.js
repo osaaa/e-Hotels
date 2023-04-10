@@ -14,12 +14,14 @@ export default async function handler(req, res) {
   });
 
   const { price_range, capacity, availability, area, hotel_chain, star_rating } = req.body;
+  console.log("Request body: ", req.body);
+
 
   try {
     client.connect();
 
     let query = `
-      SELECT h.Name, r.Price, h.City, h.State_or_province, hc.Name AS Hotel_Chain, h.Star_rating, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms
+    SELECT h.Hotel_ID as id, h.Name, r.Price, h.City, h.State_or_province, hc.Name AS Hotel_Chain, h.Star_rating, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms
       FROM Room r
       JOIN Hotel h ON r.Hotel_ID = h.Hotel_ID
       JOIN Hotel_chain hc ON h.Chain_ID = hc.Chain_ID
@@ -32,8 +34,9 @@ export default async function handler(req, res) {
             AND Check_out_date >= '${availability.check_out}')`;
 
     if (area) {
-      query += ` AND CONCAT(h.City, ', ', h.State_or_province) = '${area}'`;
+      query += ` AND CONCAT_WS(', ', h.City, h.State_or_province) = '${area}'`;
     }
+
 
     if (hotel_chain) {
       query += ` AND hc.Name = '${hotel_chain}'`;
@@ -44,6 +47,7 @@ export default async function handler(req, res) {
     }
 
     query += ` GROUP BY h.Name, r.Price, h.City, h.State_or_province, hc.Name, h.Star_rating, h.Number_of_rooms`;
+    console.log("Query: ", query);
 
 
     const result = await new Promise((resolve, reject) => {
@@ -55,6 +59,8 @@ export default async function handler(req, res) {
         }
       });
     });
+
+    console.log("Result: ", result);
 
     res.status(200).json(result);
   } catch (err) {

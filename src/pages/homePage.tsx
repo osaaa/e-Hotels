@@ -4,56 +4,104 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import { useState } from "react";
 import Link from "next/link";
+import React, { ChangeEvent, FormEvent } from 'react';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function HomePage() {
-	const [startDate, setStartDate] = useState("");
-	const [endDate, setEndDate] = useState("");
-	const [roomCapacity, setRoomCapacity] = useState("");
-	const [hotelCategory, setHotelCategory] = useState("");
-	const [priceRange, setPriceRange] = useState(100);
-	const [area, setArea] = useState("");
-	const [hotelChain, setHotelChain] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [roomCapacity, setRoomCapacity] = useState("");
+  const [hotelCategory, setHotelCategory] = useState("");
+  const [priceRange, setPriceRange] = useState([100, 1000]);
+  const [area, setArea] = useState("");
+  const [hotelChain, setHotelChain] = useState("");
+  const [availableHotels, setAvailableHotels] = useState<Hotel[]>([]);
 
-	const handleStartDateChange = (e) => {
-		setStartDate(e.target.value);
-	};
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    fetchAvailableRooms();
+  };
 
-	const handleEndDateChange = (e) => {
-		setEndDate(e.target.value);
-	};
+  const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setStartDate(e.target.value);
+  };
 
-	const handleRoomCapacity = (e) => {
-		setRoomCapacity(e.target.value);
-	};
+  const handleEndDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEndDate(e.target.value);
+  };
 
-	const handleHotelCategory = (e) => {
-		setHotelCategory(e.target.value);
-	};
+  const handleRoomCapacity = (e: ChangeEvent<HTMLSelectElement>) => {
+    setRoomCapacity(e.target.value);
+  };
 
-	const handleSliderChange = (event) => {
-		setPriceRange(event.target.value);
-	};
+  const handleHotelCategory = (e: ChangeEvent<HTMLSelectElement>) => {
+    setHotelCategory(e.target.value);
+  };
 
-	const handleArea = (e) => {
-		setArea(e.target.value);
-	};
+  const handlePriceRangeMin = (event: ChangeEvent<HTMLInputElement>) => {
+	setPriceRange([parseFloat(event.target.value), priceRange[1]]);
+  };
+  
+  const handlePriceRangeMax = (event: ChangeEvent<HTMLInputElement>) => {
+	setPriceRange([priceRange[0], parseFloat(event.target.value)]);
+  };
 
-	const handleHotelChain = (e) => {
-		setHotelChain(e.target.value);
-	};
+  const handleArea = (e: ChangeEvent<HTMLSelectElement>) => {
+    setArea(e.target.value);
+  };
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		// handle form submission here
-		// if (!startDate || !endDate || !roomCapacity) {
-		// 	// check if any of the fields are empty
-		// 	alert("Please fill in all the fields");
-		// 	return;
-		// }
-		// onSubmit({ startDate, endDate, roomCapacity });
-	};
+  const handleHotelChain = (e: ChangeEvent<HTMLSelectElement>) => {
+    setHotelChain(e.target.value);
+  };
+
+  const fetchAvailableRooms = async () => {
+	try {
+	  const response = await fetch("/api/availableRooms", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+		  price_range: priceRange,
+		  capacity: roomCapacity,
+		  availability: { check_in: startDate, check_out: endDate },
+		  area: area,
+		  hotel_chain: hotelChain,
+		  star_rating: hotelCategory,
+		}),
+	  });
+  
+	  const data = await response.json();
+	  setAvailableHotels(data);
+	} catch (error) {
+	  console.error(error);
+	}
+  };  
+
+  const HotelCard = ({ hotel }: { hotel: Hotel }) => {
+	return (
+	  <div>
+		<h3>{hotel.Name}</h3>
+		<p>Rating: {hotel.Star_rating}</p>
+		<p>Price: ${hotel.Price}</p>
+		<p>Location: {hotel.City}, {hotel.State_or_province}</p>
+		<p>Chain: {hotel.Hotel_Chain}</p>
+	  </div>
+	);
+  };
+  
+
+  interface Hotel {
+	id: number;
+	Name: string;
+	Price: number;
+	City: string;
+	State_or_province: string;
+	Hotel_Chain: string;
+	Star_rating: number;
+	Number_of_rooms: number;
+	Available_Rooms: number;
+  }
+
 	return (
 		<>
 			<div>
@@ -90,7 +138,7 @@ export default function HomePage() {
 						Room Capacity:
 						<select
 							value={roomCapacity}
-							onChange={(e) => setRoomCapacity(e.target.value)}
+							onChange={handleRoomCapacity}
 							required
 						>
 							<option value="">--Select--</option>
@@ -119,7 +167,7 @@ export default function HomePage() {
 						Hotel Chain:
 						<select
 							value={hotelChain}
-							onChange={(e) => setHotelCategory(e.target.value)}
+							onChange={handleHotelChain}
 							required
 						>
 							<option value="">--Select--</option>
@@ -168,19 +216,24 @@ export default function HomePage() {
 							min="100"
 							max="1000"
 							step="10"
-							onChange={handleSliderChange}
-							value={priceRange}
+							onChange={handlePriceRangeMax}
+  							value={priceRange[1]}
 						/>
 						<span>1000</span>
 						<div>
 							{" "}
-							<p>Price: $100 - ${priceRange}</p>{" "}
+							<p>Price: ${priceRange[0]} - ${priceRange[1]}</p>{" "}
 						</div>
 					</label>
 				</div>
 
 				<button type="submit">Search</button>
 			</form>
+			<div>
+			{Array.isArray(availableHotels) && availableHotels.map((hotel) => (
+          		<HotelCard key={hotel.id} hotel={hotel} />
+  			))}
+		  </div>
 		</>
 	);
 }
