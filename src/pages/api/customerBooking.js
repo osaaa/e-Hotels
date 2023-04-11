@@ -9,21 +9,19 @@ export default async function handler(req, res) {
     database: "Hotels",
   });
 
-  const { customer_id, room_id, check_in_date, check_out_date } = req.body;
+  const { name, ssn_sin, registrationDate, roomId, checkInDate, checkOutDate } = req.body;
 
   try {
     client.connect();
 
-    // Check if the room is available for the given check-in and check-out dates
-    const availability = await new Promise((resolve, reject) => {
-      const query = `
-        SELECT Room_ID
-        FROM Booking
-        WHERE Room_ID = '${room_id}'
-          AND Check_in_date < '${check_out_date}'
-          AND Check_out_date > '${check_in_date}'
-      `;
-      client.query(query, (error, results) => {
+    const insertCustomerQuery = `
+      INSERT INTO Customer (Name, SSN_SIN, Registration_Date)
+      VALUES (?, ?, ?);
+    `;
+    const customerParams = [name, ssn_sin, registrationDate];
+
+    const customerInsertResult = await new Promise((resolve, reject) => {
+      client.query(insertCustomerQuery, customerParams, (error, results) => {
         if (error) {
           reject(error);
         } else {
@@ -32,18 +30,16 @@ export default async function handler(req, res) {
       });
     });
 
-    if (availability.length > 0) {
-      res.status(400).json({ error: 'The room is not available for the selected dates' });
-      return;
-    }
+    const customerId = customerInsertResult.insertId;
 
-    // Insert the new booking record
-    const result = await new Promise((resolve, reject) => {
-      const query = `
-        INSERT INTO Booking (Customer_ID, Room_ID, Check_in_date, Check_out_date)
-        VALUES ('${customer_id}', '${room_id}', '${check_in_date}', '${check_out_date}')
-      `;
-      client.query(query, (error, results) => {
+    const insertBookingQuery = `
+      INSERT INTO Booking (Customer_ID, Room_ID, Check_in_date, Check_out_date)
+      VALUES (?, ?, ?, ?);
+    `;
+    const bookingParams = [customerId, roomId, checkInDate, checkOutDate];
+
+    const bookingInsertResult = await new Promise((resolve, reject) => {
+      client.query(insertBookingQuery, bookingParams, (error, results) => {
         if (error) {
           reject(error);
         } else {
@@ -52,7 +48,9 @@ export default async function handler(req, res) {
       });
     });
 
-    res.status(200).json({ message: 'Booking created successfully' });
+    const bookingNumber = bookingInsertResult.insertId;
+
+    res.status(200).json({ bookingNumber, customerId });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -60,3 +58,5 @@ export default async function handler(req, res) {
     client.end();
   }
 }
+
+
