@@ -54,6 +54,15 @@ export default function availableRooms() {
           Location: {hotel.City}, {hotel.State_or_province}
         </p>
         <p>Chain: {hotel.Hotel_Chain}</p>
+        <button
+          onClick={() =>
+            router.push(
+              `/customerBooking?roomId=${hotel.id}&startDate=${router.query.startDate}&endDate=${router.query.endDate}`
+            )
+          }
+        >
+          Select
+        </button>
       </div>
     );
   };
@@ -80,4 +89,5 @@ export default function availableRooms() {
     </>
   );
 }
+
 
