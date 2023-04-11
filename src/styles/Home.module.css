@@ -207,6 +207,42 @@
 		z-index: 1;
 	}
 }
+/* CSS INSERTS START */
+.table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.table,
+.tableData,
+.tableHeader {
+	border: 1px solid #ddd;
+	text-align: left;
+}
+.tableHeader,
+.tableData {
+	text-align: center;
+	padding: 8px;
+}
+
+.tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+.tableHeader {
+	background-color: #04aa6d;
+	color: white;
+}
+
+.availRoomSelect:hover {
+	color: lime;
+	background-color: white;
+}
+
+.availRoomSelect {
+	text-align: center;
+	padding: 8px;
+}
+/* CSS INSERTS END */
 
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
