@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 interface Hotel {
   id: number;
   Name: string;
+  imageUrl: string;
   Price: number;
   City: string;
   State_or_province: string;
@@ -53,6 +54,9 @@ export default function availableRooms() {
     return (
       <tr>
         <td>{hotel.Name}</td>
+        <td>
+        <img src={hotel.imageUrl} alt={`Image of ${hotel.Name}`} style={{ maxWidth: '100px', maxHeight: '100px' }} />
+        </td>
         <td>{hotel.Star_rating}</td>
         <td>${hotel.Price}</td>
         <td>{hotel.Amenities}</td>
@@ -90,6 +94,7 @@ export default function availableRooms() {
         <thead>
           <tr>
             <th>Hotel name</th>
+            <th>Image</th>
             <th>Star rating</th>
             <th>Price</th>
             <th>Amenities</th>
