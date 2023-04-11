@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     client.connect();
 
     let query = `
-    SELECT h.Hotel_ID as id, h.Name, r.Price, h.City, h.Street, h.Email, h.Phone, h.State_or_province, hc.Name AS Hotel_Chain, h.Star_rating, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms, r.Amenities, r.View
+    SELECT h.Hotel_ID as id, h.Name, h.imageUrl, r.Price, h.City, h.Street, h.Email, h.Phone, h.State_or_province, hc.Name AS Hotel_Chain, h.Star_rating, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms, r.Amenities, r.View
       FROM Room r
       JOIN Hotel h ON r.Hotel_ID = h.Hotel_ID
       JOIN Hotel_chain hc ON h.Chain_ID = hc.Chain_ID
