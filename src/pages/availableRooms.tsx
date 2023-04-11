@@ -16,6 +16,11 @@ interface Hotel {
   Star_rating: number;
   Number_of_rooms: number;
   Available_Rooms: number;
+  Amenities: string;
+  View: string;
+  Phone: string;
+  Street: string;
+  Email: string;
 }
 
 export default function availableRooms() {
@@ -44,48 +49,65 @@ export default function availableRooms() {
     fetchRooms();
   }, [router.query]);
 
-  const HotelCard = ({ hotel }: { hotel: Hotel }) => {
+  const HotelRow = ({ hotel }: { hotel: Hotel }) => {
     return (
-      <div>
-        <h3>{hotel.Name}</h3>
-        <p>Rating: {hotel.Star_rating}</p>
-        <p>Price: ${hotel.Price}</p>
-        <p>
-          Location: {hotel.City}, {hotel.State_or_province}
-        </p>
-        <p>Chain: {hotel.Hotel_Chain}</p>
-        <button
-          onClick={() =>
-            router.push(
-              `/customerBooking?roomId=${hotel.id}&startDate=${router.query.startDate}&endDate=${router.query.endDate}`
-            )
-          }
-        >
-          Select
-        </button>
-      </div>
+      <tr>
+        <td>{hotel.Name}</td>
+        <td>{hotel.Star_rating}</td>
+        <td>${hotel.Price}</td>
+        <td>{hotel.Amenities}</td>
+        <td>{hotel.View}</td>
+        <td>{hotel.Street}</td>
+        <td>{hotel.City}</td>
+        <td>{hotel.State_or_province}</td>
+        <td>{hotel.Hotel_Chain}</td>
+        <td>{hotel.Email}</td>
+        <td>{hotel.Phone}</td>
+        <td>
+          <button
+            onClick={() =>
+              router.push(
+                `/customerBooking?roomId=${hotel.id}&startDate=${router.query.startDate}&endDate=${router.query.endDate}`
+              )
+            }
+          >
+            Select
+          </button>
+        </td>
+      </tr>
     );
   };
 
   return (
     <>
-      <div>
-        Available Rooms
-        <Link href="./homePage">
-          <button
-            style={{ marginRight: "50px", marginLeft: "10px" }}
-            type="submit"
-          >
-            Back To Search
-          </button>
-        </Link>
-      </div>
-      <div>
-        {Array.isArray(availableHotels) &&
-          availableHotels.map((hotel) => (
-            <HotelCard key={hotel.id} hotel={hotel} />
-          ))}
-      </div>
+      <h1>Available Rooms</h1>
+      <Link href="./homePage">
+        <button style={{ marginRight: "50px", marginLeft: "10px" }} type="submit">
+          Back To Search
+        </button>
+      </Link>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Hotel name</th>
+            <th>Star rating</th>
+            <th>Price</th>
+            <th>Amenities</th>
+            <th>View</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>State or province</th>
+            <th>Hotel chain</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.isArray(availableHotels) &&
+            availableHotels.map((hotel) => <HotelRow key={hotel.id} hotel={hotel} />)}
+        </tbody>
+      </table>
     </>
   );
 }
