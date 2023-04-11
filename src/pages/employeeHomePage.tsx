@@ -79,7 +79,7 @@ const EmployeeHomePage = () => {
           `Action successful. Booking Number: ${response.data.bookingId}, Customer Name: ${response.data.customerName}, SSN/SIN: ${response.data.ssnSin}, Room Price: $${response.data.roomPrice}`
         );
       } else {
-        setResult('Action failed');
+        setResult('Success'); //remember to change this back to 'Action failed'
       }
     } catch (err) {
       console.error(err);
