@@ -104,7 +104,12 @@ CREATE TABLE IF NOT EXISTS Renting_archive (
   Check_out_date DATE NOT NULL
 );
 
-
+CREATE TABLE IF NOT EXISTS payments (
+  payment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  customer_name VARCHAR(50) NOT NULL,
+  ssn_sin VARCHAR(20) NOT NULL,
+  amount DECIMAL(8,2) CHECK (amount > 0)
+);
 
 
 

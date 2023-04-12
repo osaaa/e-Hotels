@@ -1,4 +1,6 @@
-/* Employee */
+// This ensures that the employee ID entered by the user is valid before granting access to the employee panel
+
+
 import mysql from 'mysql';
 
 export default async function handler(req, res) {
@@ -31,10 +33,10 @@ export default async function handler(req, res) {
     const count = result[0].count;
     if (count > 0) {
       // The entered employee ID is valid
-      res.status(200).json({ message: 'Access granted' });
+      res.status(200).json({ success: true, message: 'Access granted' });
     } else {
       // The entered employee ID is invalid
-      res.status(401).json({ error: 'Access denied' });
+      res.status(403).json({ success: false, message: 'Access denied' });
     }
   } catch (err) {
     console.error(err);
