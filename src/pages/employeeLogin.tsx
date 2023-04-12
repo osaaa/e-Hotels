@@ -1,3 +1,7 @@
+/*
+ * This file is for the employee to login to the system.
+*/
+
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import { useState, ChangeEvent, FormEvent } from "react";
@@ -45,30 +49,57 @@ export default function EmployeeLoginPage() {
 	};
 	return (
 		<>
-			<form onSubmit={handleSubmit}>
-				<div>
-					Employee ID:
-					<input
-						type="text"
-						id="employeeID"
-						name="employeeID"
-						required
-						value={employeeID}
-						onChange={handleEmployeeID}
-					/>
-				</div>
+			<div className={styles.container} style={{ marginBottom: "10px" }}>
+				<ul className={styles.list}>
+					<h1 style={{ borderStyle: "outset" }}>Employee Login</h1>
+				</ul>
+			</div>
 
-				<button type="submit">Submit</button>
-			</form>
-			<Link href="./homePage">
-				<button
-					style={{ marginRight: "50px", marginLeft: "10px" }}
-					type="submit"
+			<form
+				onSubmit={handleSubmit}
+				style={{
+					borderStyle: "outset",
+					borderColor: "grey",
+					borderWidth: "40px",
+				}}
+			>
+				<div
+					style={{
+						fontSize: "20px",
+						margin: "10px",
+					}}
 				>
-					Back
-				</button>
-			</Link>
-			{validationResult && <p>{validationResult}</p>}
+					<div>
+						Employee ID:
+						<input
+							type="text"
+							id="employeeID"
+							name="employeeID"
+							required
+							value={employeeID}
+							onChange={handleEmployeeID}
+						/>
+					</div>
+
+					<Link href="./homePage">
+						<button
+							style={{
+								marginTop: "15px",
+								marginRight: "50px",
+								marginLeft: "10px",
+							}}
+							type="submit"
+						>
+							Back
+						</button>
+					</Link>
+					<button type="submit">Submit</button>
+				</div>
+				{validationResult && (
+					<p style={{ fontSize: "15px", color: "red" }}>{validationResult}</p>
+				)}
+			</form>
 		</>
 	);
 }
+

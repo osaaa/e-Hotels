@@ -1,4 +1,6 @@
-/* Employee */
+// This ensures that the employee ID entered by the user is valid before granting access to the employee panel
+
+
 import mysql from 'mysql';
 
 export default async function handler(req, res) {

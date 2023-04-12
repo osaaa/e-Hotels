@@ -1,3 +1,7 @@
+/*
+* This file displays the 7 filters that the customer can use to search for a hotel room.
+ */
+
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
@@ -22,19 +26,18 @@ export default function HomePage() {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const query = new URLSearchParams({
-		  startDate,
-		  endDate,
-		  roomCapacity,
-		  hotelCategory,
-		  priceRangeMin: priceRange[0].toString(),
-		  priceRangeMax: priceRange[1].toString(),
-		  area,
-		  hotelChain,
+			startDate,
+			endDate,
+			roomCapacity,
+			hotelCategory,
+			priceRangeMin: priceRange[0].toString(),
+			priceRangeMax: priceRange[1].toString(),
+			area,
+			hotelChain,
 		}).toString();
 		router.push(`/availableRooms?${query}`);
-	  };
+	};
 
-	  
 	const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setStartDate(e.target.value);
 	};
@@ -59,7 +62,9 @@ export default function HomePage() {
 		setPriceRange([priceRange[0], parseFloat(event.target.value)]);
 	};
 
-	const handleArea = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+	const handleArea = (e: {
+		target: { value: React.SetStateAction<string> };
+	}) => {
 		setArea(e.target.value);
 	};
 
@@ -69,125 +74,155 @@ export default function HomePage() {
 
 	return (
 		<>
-			<div>
+			<div className={styles.container} style={{ marginBottom: "10px" }}>
+				<ul className={styles.list}>
+					<h1 style={{ borderStyle: "outset" }}>Hotel Search</h1>
+				</ul>
+			</div>
+
+			<form
+				onSubmit={handleSubmit}
+				style={{
+					borderStyle: "outset",
+					borderColor: "grey",
+					borderWidth: "40px",
+				}}
+			>
+				<div
+					style={{
+						fontSize: "20px",
+						margin: "10px",
+					}}
+				>
+					<div>
+						<label htmlFor="start-date">Start Date: </label>
+						<input
+							type="date"
+							id="start-date"
+							value={startDate}
+							onChange={handleStartDateChange}
+							required
+						/>
+					</div>
+					<div>
+						<label htmlFor="end-date">End Date: </label>
+						<input
+							type="date"
+							id="end-date"
+							value={endDate}
+							onChange={handleEndDateChange}
+							required
+						/>
+					</div>
+					<div>
+						{" "}
+						<label>
+							Room Capacity:
+							<select
+								value={roomCapacity}
+								onChange={handleRoomCapacity}
+								required
+							>
+								<option value="">--Select--</option>
+								<option value="single">Single</option>
+								<option value="double">Double</option>
+								<option value="Triple">Triple</option>
+								<option value="Quadruple">Quadruple</option>
+								<option value="Suite">Suite</option>
+							</select>
+						</label>
+					</div>
+					<div>
+						Area:
+						<input
+							type="text"
+							id="area"
+							name="area"
+							required
+							value={area}
+							onChange={handleArea}
+						/>
+					</div>
+					<div>
+						{" "}
+						<label>
+							Hotel Chain:
+							<select value={hotelChain} onChange={handleHotelChain} required>
+								<option value="">--Select--</option>
+								<option value="Marriott International">
+									Marriott International
+								</option>
+								<option value="Hilton Worldwide">Hilton Worldwide</option>
+								<option value="Intercontinental Hotels Group">
+									Intercontinental Hotels Group
+								</option>
+								<option value="Wyndham Hotels and Resorts">
+									Wyndham Hotels and Resorts
+								</option>
+								<option value="Choice Hotel Internationals">
+									Choice Hotel Internationals
+								</option>
+							</select>
+						</label>
+					</div>
+					<div>
+						{" "}
+						<label>
+							Hotel Rating:
+							<select
+								value={hotelCategory}
+								onChange={handleHotelCategory}
+								required
+							>
+								<option value="">--Select--</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select>
+						</label>
+					</div>
+					<div>
+						<label htmlFor="price-range">
+							Price range:
+							<span>100</span>
+							<input
+								type="range"
+								id="price-range"
+								name="price-range"
+								min="100"
+								max="1000"
+								step="10"
+								onChange={handlePriceRangeMax}
+								value={priceRange[1]}
+							/>
+							<span>1000</span>
+							<div>
+								{" "}
+								<p>
+									Price: ${priceRange[0]} - ${priceRange[1]}
+								</p>{" "}
+							</div>
+						</label>
+					</div>
+
+					<button type="submit">Search</button>
+				</div>
+			</form>
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "flex-end",
+					marginTop: "10px",
+				}}
+			>
 				<Link href="./employeeLogin">
 					<button id="employee-login" type="submit">
 						Employee Login
 					</button>
 				</Link>
 			</div>
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor="start-date">Start Date: </label>
-					<input
-						type="date"
-						id="start-date"
-						value={startDate}
-						onChange={handleStartDateChange}
-						required
-					/>
-				</div>
-				<div>
-					<label htmlFor="end-date">End Date: </label>
-					<input
-						type="date"
-						id="end-date"
-						value={endDate}
-						onChange={handleEndDateChange}
-						required
-					/>
-				</div>
-				<div>
-					{" "}
-					<label>
-						Room Capacity:
-						<select value={roomCapacity} onChange={handleRoomCapacity} required>
-							<option value="">--Select--</option>
-							<option value="single">Single</option>
-							<option value="double">Double</option>
-							<option value="Triple">Triple</option>
-							<option value="Quadruple">Quadruple</option>
-							<option value="Suite">Suite</option>
-						</select>
-					</label>
-				</div>
-				<div>
-					Area:
-					<input
-						type="text"
-						id="area"
-						name="area"
-						required
-						value={area}
-						onChange={handleArea}
-					/>
-				</div>
-				<div>
-					{" "}
-					<label>
-						Hotel Chain:
-						<select value={hotelChain} onChange={handleHotelChain} required>
-							<option value="">--Select--</option>
-							<option value="Marriott International">
-								Marriott International
-							</option>
-							<option value="Hilton Worldwide">Hilton Worldwide</option>
-							<option value="Intercontinental Hotels Group">
-								Intercontinental Hotels Group
-							</option>
-							<option value="Wyndham Hotels and Resorts">
-								Wyndham Hotels and Resorts
-							</option>
-							<option value="Choice Hotel Internationals">
-								Choice Hotel Internationals
-							</option>
-						</select>
-					</label>
-				</div>
-				<div>
-					{" "}
-					<label>
-						Hotel Rating:
-						<select
-							value={hotelCategory}
-							onChange={handleHotelCategory}
-							required
-						>
-							<option value="">--Select--</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-						</select>
-					</label>
-				</div>
-				<div>
-					<label htmlFor="price-range">
-						Price range:
-						<span>100</span>
-						<input
-							type="range"
-							id="price-range"
-							name="price-range"
-							min="100"
-							max="1000"
-							step="10"
-							onChange={handlePriceRangeMax}
-							value={priceRange[1]}
-						/>
-						<span>1000</span>
-						<div>
-							{" "}
-							<p>
-								Price: ${priceRange[0]} - ${priceRange[1]}
-							</p>{" "}
-						</div>
-					</label>
-				</div>
-
-				<button type="submit">Search</button>
-			</form>
 		</>
 	);
 }

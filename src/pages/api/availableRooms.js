@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     client.connect();
 
     let query = `
-      SELECT h.Hotel_ID as id, h.Name, r.Price, h.City, h.State_or_province, hc.Name AS Hotel_Chain, h.Star_rating, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms
+    SELECT h.Hotel_ID as id, h.Name, h.imageUrl, r.Price, h.City, h.Street, h.Email, h.Phone, h.State_or_province, hc.Name AS Hotel_Chain, h.Star_rating, h.Number_of_rooms, COUNT(r.Room_ID) AS Available_Rooms, r.Amenities, r.View
       FROM Room r
       JOIN Hotel h ON r.Hotel_ID = h.Hotel_ID
       JOIN Hotel_chain hc ON h.Chain_ID = hc.Chain_ID
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
       queryParams.push(hotelCategory);
     }
 
-    query += " GROUP BY h.Hotel_ID, h.Name, r.Price, h.City, h.State_or_province, hc.Name, h.Star_rating, h.Number_of_rooms";
+    query += " GROUP BY h.Hotel_ID, h.Name, r.Price, h.City, h.State_or_province, hc.Name, h.Star_rating, h.Number_of_rooms, r.Amenities, r.View";
     console.log("Query: ", query);
 
     console.log("Final query: ", query);
@@ -76,3 +76,4 @@ export default async function handler(req, res) {
     client.end();
   }
 }
+
